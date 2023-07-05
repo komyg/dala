@@ -1,0 +1,16 @@
+dala = _{ SOI ~ functions* ~ EOI }
+
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+
+string = ${ "\"" ~ inner ~ "\"" }
+inner  = @{ char* }
+char   =  {
+    !("\"" | "\\") ~ ANY
+  | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+  | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
+}
+
+// Functions
+functions = _{ upper }
+
+upper = { "UPPER" ~ "(" ~ string ~ ")" }
