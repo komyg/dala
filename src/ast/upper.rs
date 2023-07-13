@@ -1,9 +1,23 @@
-use crate::ast::literal::Literal;
+use crate::ast::common::Position;
 
-use crate::ast::common::{DalaExpression, Position};
+use super::common::{DalaError, DalaResult, Visitor};
 
 #[derive(Debug)]
 pub struct Upper {
     pub pos: Position,
-    pub child: Box<DalaExpression>,
+    pub child: Box<dyn Visitor>,
+}
+
+impl Visitor for Upper {
+    fn eval(&self) -> Result<DalaResult, DalaError> {
+        let child_value = self.child.eval();
+        match child_value {
+            Ok(result) => match result {
+                DalaResult::Str(value) => Ok(DalaResult::Str(value.to_uppercase())),
+                DalaResult::Num(value) => Ok(DalaResult::Str(value.to_string().to_uppercase())),
+                DalaResult::Boolean(value) => Ok(DalaResult::Str(value.to_string().to_uppercase())),
+            },
+            Err(err) => Err(err),
+        }
+    }
 }

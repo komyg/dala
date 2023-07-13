@@ -1,11 +1,6 @@
 use crate::ast::common::Position;
 
-#[derive(Debug)]
-pub enum Literal {
-    Str(Str),
-    Number(Number),
-    Boolean(Boolean),
-}
+use super::common::{DalaError, DalaResult, Visitor};
 
 #[derive(Debug)]
 pub struct Str {
@@ -14,7 +9,7 @@ pub struct Str {
 }
 
 #[derive(Debug)]
-pub struct Number {
+pub struct Num {
     pub pos: Position,
     pub value: f64,
 }
@@ -23,4 +18,22 @@ pub struct Number {
 pub struct Boolean {
     pub pos: Position,
     pub value: bool,
+}
+
+impl Visitor for Str {
+    fn eval(&self) -> Result<DalaResult, DalaError> {
+        Ok(DalaResult::Str(self.value.clone()))
+    }
+}
+
+impl Visitor for Num {
+    fn eval(&self) -> Result<DalaResult, DalaError> {
+        Ok(DalaResult::Num(self.value))
+    }
+}
+
+impl Visitor for Boolean {
+    fn eval(&self) -> Result<DalaResult, DalaError> {
+        Ok(DalaResult::Boolean(self.value))
+    }
 }
