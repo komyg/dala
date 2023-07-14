@@ -2,11 +2,8 @@ use pest::iterators::Pair;
 use pest::Parser;
 use pest_derive::Parser;
 
-use crate::ast::{
-    common::{DalaExpression, Position, Visitor},
-    literal::Str,
-    upper::Upper,
-};
+use crate::ast::expr::dala::{DalaExpression, Visitor};
+use crate::ast::{common::postion::Position, expr::literal::Str, expr::upper::Upper};
 
 #[derive(Parser)]
 #[grammar = "dala.pest"]
@@ -15,22 +12,13 @@ struct DalaParser;
 fn parse_expr(pair: Pair<Rule>) -> DalaExpression {
     match pair.as_rule() {
         Rule::string => DalaExpression::Str(Str {
-            pos: Position {
-                start: pair.as_span().start(),
-                end: pair.as_span().end(),
-            },
+            pos: Position::new(pair.as_span()),
             value: pair.into_inner().next().unwrap().as_str().to_string(),
         }),
-        Rule::upper => {
-            let child_pair = pair.into_inner().next().unwrap();
-            DalaExpression::Upper(Upper {
-                pos: Position {
-                    start: child_pair.as_span().start(),
-                    end: child_pair.as_span().end(),
-                },
-                child: Box::new(parse_expr(child_pair)),
-            })
-        }
+        Rule::upper => DalaExpression::Upper(Upper {
+            pos: Position::new(pair.as_span()),
+            child: Box::new(parse_expr(pair.into_inner().next().unwrap())),
+        }),
         Rule::EOI => DalaExpression::None,
         Rule::dala | Rule::inner | Rule::char | Rule::WHITESPACE | Rule::functions => {
             unreachable!()
