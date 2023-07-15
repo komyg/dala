@@ -2,7 +2,7 @@ use pest::iterators::Pair;
 use pest::Parser;
 use pest_derive::Parser;
 
-use crate::ast::expr::dala::{DalaExpression, Visitor};
+use crate::ast::expr::dala::DalaExpression;
 use crate::ast::{common::postion::Position, expr::literal::Str, expr::upper::Upper};
 
 #[derive(Parser)]
@@ -26,14 +26,10 @@ fn parse_expr(pair: Pair<Rule>) -> DalaExpression {
     }
 }
 
-pub fn parse_dala(str: &str) {
+pub fn parse_dala(str: &str) -> Vec<DalaExpression> {
     let dala = DalaParser::parse(Rule::dala, str).unwrap();
 
-    let result = dala.map(parse_expr).collect::<Vec<_>>();
-    println!("{:#?}", result);
-
-    result.iter().for_each(|expr| {
-        let result = expr.eval();
-        println!("RESULT {:#?}", result);
-    });
+    dala.map(parse_expr)
+        .filter(|expr| !matches!(expr, DalaExpression::None))
+        .collect::<Vec<_>>()
 }

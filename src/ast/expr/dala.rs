@@ -1,7 +1,7 @@
-use std::fmt;
-
 use super::literal::{Boolean, Num, Str};
 use super::upper::Upper;
+use crate::{DalaError, DalaValue};
+use std::fmt;
 
 #[derive(Debug)]
 pub enum DalaExpression {
@@ -13,7 +13,7 @@ pub enum DalaExpression {
 }
 
 impl Visitor for DalaExpression {
-    fn eval(&self) -> Result<DalaResult, DalaError> {
+    fn eval(&self) -> Result<DalaValue, DalaError> {
         match self {
             DalaExpression::Str(expr) => expr.eval(),
             DalaExpression::Num(expr) => expr.eval(),
@@ -24,28 +24,12 @@ impl Visitor for DalaExpression {
     }
 }
 
-#[derive(Debug, Clone)]
-pub enum DalaResult {
-    Str(String),
-    Num(f64),
-    Boolean(bool),
-}
-
 pub trait Visitor {
-    fn eval(&self) -> Result<DalaResult, DalaError>;
+    fn eval(&self) -> Result<DalaValue, DalaError>;
 }
 
 impl core::fmt::Debug for dyn Visitor {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Visitor")
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct DalaError(String);
-
-impl fmt::Display for DalaError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.0)
     }
 }

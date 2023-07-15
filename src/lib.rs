@@ -1,17 +1,27 @@
 mod ast;
+
+use crate::ast::expr::dala::Visitor;
 use ast::parser::parse_dala;
 
-fn parse(str: &str) {
-    parse_dala(str);
+use core::fmt;
+
+#[derive(Debug, Clone)]
+pub enum DalaValue {
+    Str(String),
+    Num(f64),
+    Boolean(bool),
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[derive(Debug, Clone)]
+pub struct DalaError(pub String);
 
-    #[test]
-    fn test_dala() {
-        let input = "UPPER(\"abc\")";
-        parse(input);
+impl fmt::Display for DalaError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
+}
+
+pub fn eval_dala(str: &str) -> Vec<Result<DalaValue, DalaError>> {
+    let parsed = parse_dala(str);
+    parsed.iter().map(|expr| expr.eval()).collect()
 }

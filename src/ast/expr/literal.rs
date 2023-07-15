@@ -1,6 +1,7 @@
 use crate::ast::common::postion::Position;
+use crate::{DalaError, DalaValue};
 
-use super::dala::{DalaError, DalaResult, Visitor};
+use super::dala::Visitor;
 
 #[derive(Debug)]
 pub struct Str {
@@ -21,19 +22,19 @@ pub struct Boolean {
 }
 
 impl Visitor for Str {
-    fn eval(&self) -> Result<DalaResult, DalaError> {
-        Ok(DalaResult::Str(self.value.clone()))
+    fn eval(&self) -> Result<DalaValue, DalaError> {
+        Ok(DalaValue::Str(self.value.clone()))
     }
 }
 
 impl Visitor for Num {
-    fn eval(&self) -> Result<DalaResult, DalaError> {
-        Ok(DalaResult::Num(self.value))
+    fn eval(&self) -> Result<DalaValue, DalaError> {
+        Ok(DalaValue::Num(self.value))
     }
 }
 
 impl Visitor for Boolean {
-    fn eval(&self) -> Result<DalaResult, DalaError> {
-        Ok(DalaResult::Boolean(self.value))
+    fn eval(&self) -> Result<DalaValue, DalaError> {
+        Ok(DalaValue::Boolean(self.value))
     }
 }

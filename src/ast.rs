@@ -1,3 +1,3 @@
 mod common;
-mod expr;
+pub mod expr;
 pub mod parser;

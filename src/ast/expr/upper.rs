@@ -1,5 +1,6 @@
-use super::dala::{DalaError, DalaResult, Visitor};
+use super::dala::Visitor;
 use crate::ast::common::postion::Position;
+use crate::{DalaError, DalaValue};
 
 #[derive(Debug)]
 pub struct Upper {
@@ -8,13 +9,13 @@ pub struct Upper {
 }
 
 impl Visitor for Upper {
-    fn eval(&self) -> Result<DalaResult, DalaError> {
+    fn eval(&self) -> Result<DalaValue, DalaError> {
         let child_value = self.child.eval();
         match child_value {
             Ok(result) => match result {
-                DalaResult::Str(value) => Ok(DalaResult::Str(value.to_uppercase())),
-                DalaResult::Num(value) => Ok(DalaResult::Str(value.to_string().to_uppercase())),
-                DalaResult::Boolean(value) => Ok(DalaResult::Str(value.to_string().to_uppercase())),
+                DalaValue::Str(value) => Ok(DalaValue::Str(value.to_uppercase())),
+                DalaValue::Num(value) => Ok(DalaValue::Str(value.to_string().to_uppercase())),
+                DalaValue::Boolean(value) => Ok(DalaValue::Str(value.to_string().to_uppercase())),
             },
             Err(err) => Err(err),
         }
