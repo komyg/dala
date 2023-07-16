@@ -1,6 +1,5 @@
 use super::dala::Visitor;
-use crate::ast::common::postion::Position;
-use crate::{DalaError, DalaValue};
+use crate::{DalaError, DalaValue, Position};
 
 #[derive(Debug)]
 pub struct Upper {

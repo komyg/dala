@@ -1,4 +1,7 @@
-dala = _{ SOI ~ functions* ~ EOI }
+dala = _{ SOI ~ functions* ~ eoi }
+
+// Ignore EOI (https://github.com/pest-parser/pest/issues/304)
+eoi = _{ !ANY }
 
 WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 
@@ -9,6 +12,12 @@ char   =  {
   | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
   | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
 }
+
+number = @{
+    "-"? ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*) ~ ("." ~ ASCII_DIGIT*)?
+}
+
+boolean = { "TRUE" | "FALSE" }
 
 // Functions
 functions = _{ upper }

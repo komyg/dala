@@ -1,5 +1,4 @@
-use crate::ast::common::postion::Position;
-use crate::{DalaError, DalaValue};
+use crate::{DalaError, DalaValue, Position};
 
 use super::dala::Visitor;
 
@@ -16,7 +15,7 @@ pub struct Num {
 }
 
 #[derive(Debug)]
-pub struct Boolean {
+pub struct Bool {
     pub pos: Position,
     pub value: bool,
 }
@@ -33,7 +32,7 @@ impl Visitor for Num {
     }
 }
 
-impl Visitor for Boolean {
+impl Visitor for Bool {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         Ok(DalaValue::Boolean(self.value))
     }
