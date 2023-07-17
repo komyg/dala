@@ -22,4 +22,4 @@ boolean = { "TRUE" | "FALSE" }
 // Functions
 functions = _{ upper }
 
-upper = { "UPPER" ~ "(" ~ string ~ ")" }
+upper = { "UPPER" ~ "(" ~ string | number | boolean ~ ")" }

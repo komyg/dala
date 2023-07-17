@@ -69,5 +69,8 @@ impl fmt::Display for ParseError {
 
 pub fn eval_dala(str: &str) -> Vec<Result<DalaValue, DalaError>> {
     let parsed = parse_dala(str);
-    parsed.iter().map(|expr| expr.eval()).collect()
+    parsed
+        .into_iter()
+        .map(|expr| expr.and_then(|e| e.eval()))
+        .collect()
 }
