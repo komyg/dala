@@ -1,16 +1,14 @@
-use pest::iterators::Pair;
-use pest::Parser;
-use pest_derive::Parser;
+use pest::iterators::{Pair, Pairs};
 
-use crate::ast::expr::dala::DalaExpression;
-use crate::ast::{expr::literal::Bool, expr::literal::Num, expr::literal::Str, expr::upper::Upper};
+use crate::dala_lang::{
+    expr::literal::Bool, expr::literal::Num, expr::literal::Str, expr::upper::Upper,
+};
 use crate::{DalaError, ParseError, Position};
 
-#[derive(Parser)]
-#[grammar = "dala.pest"]
-struct DalaParser;
+use super::expr::DalaExpression;
+use super::parser::Rule;
 
-fn parse_expr(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
+fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
     let pos = Position::new(pair.as_span());
     match pair.as_rule() {
         Rule::string => match pair.into_inner().next() {
@@ -44,7 +42,7 @@ fn parse_expr(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
             })),
         },
         Rule::upper => match pair.into_inner().next() {
-            Some(inner) => parse_expr(inner).map_or(
+            Some(inner) => build_ast(inner).map_or(
                 Err(DalaError::ParseError(ParseError {
                     pos: pos.clone(),
                     message: "empty expression".to_string(),
@@ -61,14 +59,18 @@ fn parse_expr(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                 message: "empty expression".to_string(),
             })),
         },
-        Rule::dala | Rule::inner | Rule::char | Rule::WHITESPACE | Rule::functions | Rule::eoi => {
+        Rule::dala
+        | Rule::inner
+        | Rule::char
+        | Rule::WHITESPACE
+        | Rule::functions
+        | Rule::eoi
+        | Rule::literals => {
             unreachable!()
         }
     }
 }
 
-pub fn parse_dala(str: &str) -> Vec<Result<DalaExpression, DalaError>> {
-    let dala = DalaParser::parse(Rule::dala, str).unwrap();
-
-    dala.map(parse_expr).collect::<Vec<_>>()
+pub fn create_ast(pairs: Pairs<'_, Rule>) -> Vec<Result<DalaExpression, DalaError>> {
+    pairs.map(build_ast).collect()
 }

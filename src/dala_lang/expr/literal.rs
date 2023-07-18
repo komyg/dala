@@ -1,6 +1,6 @@
 use crate::{DalaError, DalaValue, Position};
 
-use super::dala::Visitor;
+use super::eval_visitor::EvalVisitor;
 
 #[derive(Debug)]
 pub struct Str {
@@ -20,19 +20,19 @@ pub struct Bool {
     pub value: bool,
 }
 
-impl Visitor for Str {
+impl EvalVisitor for Str {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         Ok(DalaValue::Str(self.value.clone()))
     }
 }
 
-impl Visitor for Num {
+impl EvalVisitor for Num {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         Ok(DalaValue::Num(self.value))
     }
 }
 
-impl Visitor for Bool {
+impl EvalVisitor for Bool {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         Ok(DalaValue::Boolean(self.value))
     }

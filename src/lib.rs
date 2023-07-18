@@ -1,9 +1,9 @@
-mod ast;
-use crate::ast::expr::dala::Visitor;
-use ast::parser::parse_dala;
+use core::fmt;
 use pest::Span;
 
-use core::fmt;
+mod dala_lang;
+use dala_lang::expr::eval_visitor::EvalVisitor;
+use dala_lang::{ast::create_ast, parser::parse_dala};
 
 #[derive(Debug, Clone)]
 pub enum DalaValue {
@@ -69,8 +69,12 @@ impl fmt::Display for ParseError {
 
 pub fn eval_dala(str: &str) -> Vec<Result<DalaValue, DalaError>> {
     let parsed = parse_dala(str);
-    parsed
+    if parsed.is_err() {
+        return vec![Err(parsed.unwrap_err())];
+    }
+
+    create_ast(parsed.unwrap())
         .into_iter()
-        .map(|expr| expr.and_then(|e| e.eval()))
+        .map(|expr| expr.and_then(|expr| expr.eval()))
         .collect()
 }

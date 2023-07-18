@@ -1,13 +1,13 @@
-use super::dala::Visitor;
+use super::eval_visitor::EvalVisitor;
 use crate::{DalaError, DalaValue, Position};
 
 #[derive(Debug)]
 pub struct Upper {
     pub pos: Position,
-    pub child: Box<dyn Visitor>,
+    pub child: Box<dyn EvalVisitor>,
 }
 
-impl Visitor for Upper {
+impl EvalVisitor for Upper {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         let child_value = self.child.eval();
         match child_value {

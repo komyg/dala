@@ -19,7 +19,9 @@ number = @{
 
 boolean = { "TRUE" | "FALSE" }
 
+literals = _{ string | number | boolean }
+
 // Functions
 functions = _{ upper }
 
-upper = { "UPPER" ~ "(" ~ string | number | boolean ~ ")" }
+upper = { "UPPER" ~ "(" ~ literals ~ ")" }

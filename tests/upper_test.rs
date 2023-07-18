@@ -6,7 +6,6 @@ fn test_str() {
     assert_eq!(result.len(), 1);
 
     result.iter().for_each(|r| {
-        assert_eq!(r.is_ok(), true);
         let DalaValue::Str(value) = r.as_ref().unwrap() else { panic!("Not a string") };
         assert_eq!(value, "ABC");
     });
@@ -19,7 +18,6 @@ fn test_int() {
     assert_eq!(result.len(), 1);
 
     result.iter().for_each(|r| {
-        assert_eq!(r.is_ok(), true);
         let DalaValue::Str(value) = r.as_ref().unwrap() else { panic!("Not a string") };
         assert_eq!(value, "123");
     });
