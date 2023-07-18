@@ -12,7 +12,6 @@ fn test_str() {
 }
 
 #[test]
-#[ignore]
 fn test_int() {
     let result = eval_dala("UPPER(123)");
     assert_eq!(result.len(), 1);
@@ -20,5 +19,16 @@ fn test_int() {
     result.iter().for_each(|r| {
         let DalaValue::Str(value) = r.as_ref().unwrap() else { panic!("Not a string") };
         assert_eq!(value, "123");
+    });
+}
+
+#[test]
+fn test_bool() {
+    let result = eval_dala("UPPER(TRUE)");
+    assert_eq!(result.len(), 1);
+
+    result.iter().for_each(|r| {
+        let DalaValue::Str(value) = r.as_ref().unwrap() else { panic!("Not a string") };
+        assert_eq!(value, "TRUE");
     });
 }

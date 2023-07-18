@@ -21,26 +21,14 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                 message: "empty string".to_string(),
             })),
         },
-        Rule::number => match pair.into_inner().next() {
-            Some(inner) => Ok(DalaExpression::Num(Num {
-                pos,
-                value: inner.as_str().parse::<f64>().unwrap(),
-            })),
-            None => Err(DalaError::ParseError(ParseError {
-                pos,
-                message: "empty number".to_string(),
-            })),
-        },
-        Rule::boolean => match pair.into_inner().next() {
-            Some(inner) => Ok(DalaExpression::Bool(Bool {
-                pos,
-                value: inner.as_str().parse::<bool>().unwrap(),
-            })),
-            None => Err(DalaError::ParseError(ParseError {
-                pos,
-                message: "empty boolean".to_string(),
-            })),
-        },
+        Rule::number => Ok(DalaExpression::Num(Num {
+            pos,
+            value: pair.as_str().parse::<f64>().unwrap(),
+        })),
+        Rule::boolean => Ok(DalaExpression::Bool(Bool {
+            pos,
+            value: pair.as_str().to_lowercase().parse::<bool>().unwrap(),
+        })),
         Rule::upper => match pair.into_inner().next() {
             Some(inner) => build_ast(inner).map_or(
                 Err(DalaError::ParseError(ParseError {
