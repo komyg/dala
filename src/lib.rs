@@ -1,9 +1,9 @@
 use core::fmt;
 use pest::Span;
 
-mod dala_lang;
-use dala_lang::expr::eval_visitor::EvalVisitor;
-use dala_lang::{ast::create_ast, parser::parse_dala};
+mod interpreter;
+use interpreter::expr::eval_visitor::EvalVisitor;
+use interpreter::{ast::create_ast, parser::parse_dala};
 
 #[derive(Debug, Clone)]
 pub enum DalaValue {

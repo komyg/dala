@@ -1,6 +1,6 @@
 use pest::iterators::{Pair, Pairs};
 
-use crate::dala_lang::{
+use crate::interpreter::{
     expr::literal::Bool, expr::literal::Num, expr::literal::Str, expr::upper::Upper,
 };
 use crate::{DalaError, ParseError, Position};
