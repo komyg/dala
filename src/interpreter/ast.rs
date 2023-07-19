@@ -1,7 +1,8 @@
 use pest::iterators::{Pair, Pairs};
 
 use crate::interpreter::{
-    expr::literal::Bool, expr::literal::Num, expr::literal::Str, expr::upper::Upper,
+    expr::concat::Concat, expr::literal::Bool, expr::literal::Num, expr::literal::Str,
+    expr::upper::Upper,
 };
 use crate::{BuildError, DalaError, Position};
 
@@ -47,13 +48,55 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                 message: "empty expression".to_string(),
             })),
         },
+        Rule::concat => {
+            let children = pair
+                .into_inner()
+                .map(|inner| build_ast(inner))
+                .collect::<Result<Vec<DalaExpression>, DalaError>>();
+
+            if children.is_err() {
+                return Err(children.unwrap_err());
+            }
+            let boxed_children = children
+                .unwrap()
+                .into_iter()
+                .map(|child| Box::new(child))
+                .collect::<Vec<Box<DalaExpression>>>();
+
+            Ok(DalaExpression::Concat(Concat {
+                pos,
+                children: boxed_children,
+            }))
+        }
+        // Rule::concat => match pair.into_inner().next() {
+        //     Some(inner) => build_ast(inner).map_or(
+        //         Err(DalaError::BuildError(BuildError {
+        //             pos: pos.clone(),
+        //             message: "empty expression".to_string(),
+        //         })),
+        //         |child| {
+        //             Ok(DalaExpression::Concat(
+        //                 crate::interpreter::expr::concat::Concat {
+        //                     pos,
+        //                     children: vec![Box::new(child)],
+        //                 },
+        //             ))
+        //         },
+        //     ),
+        //     None => Err(DalaError::BuildError(BuildError {
+        //         pos,
+        //         message: "empty expression".to_string(),
+        //     })),
+        // },
         Rule::dala
         | Rule::inner
         | Rule::char
         | Rule::WHITESPACE
         | Rule::functions
         | Rule::eoi
-        | Rule::literals => {
+        | Rule::literals
+        | Rule::arg
+        | Rule::args => {
             unreachable!()
         }
     }

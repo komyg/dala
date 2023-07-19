@@ -22,6 +22,10 @@ boolean = { "TRUE" | "FALSE" }
 literals = _{ string | number | boolean }
 
 // Functions
-functions = _{ upper }
+functions = _{ upper | concat }
 
-upper = { "UPPER" ~ "(" ~ literals ~ ")" }
+arg  = _{ literals | functions }
+args = _{ arg ~ ("," ~ arg)* }
+
+upper  = { "UPPER" ~ "(" ~ literals ~ ")" }
+concat = { "CONCAT" ~ "(" ~ args ~ ")" }

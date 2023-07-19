@@ -1,10 +1,10 @@
-use super::eval_visitor::EvalVisitor;
+use super::{eval_visitor::EvalVisitor, DalaExpression};
 use crate::{DalaError, DalaValue, Position};
 
 #[derive(Debug)]
 pub struct Upper {
     pub pos: Position,
-    pub child: Box<dyn EvalVisitor>,
+    pub child: Box<DalaExpression>,
 }
 
 impl EvalVisitor for Upper {
