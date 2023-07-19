@@ -3,7 +3,7 @@ use pest::iterators::{Pair, Pairs};
 use crate::interpreter::{
     expr::literal::Bool, expr::literal::Num, expr::literal::Str, expr::upper::Upper,
 };
-use crate::{DalaError, ParseError, Position};
+use crate::{BuildError, DalaError, Position};
 
 use super::expr::DalaExpression;
 use super::parser::Rule;
@@ -16,7 +16,7 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                 pos,
                 value: inner.as_str().to_string(),
             })),
-            None => Err(DalaError::ParseError(ParseError {
+            None => Err(DalaError::BuildError(BuildError {
                 pos,
                 message: "empty string".to_string(),
             })),
@@ -31,7 +31,7 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
         })),
         Rule::upper => match pair.into_inner().next() {
             Some(inner) => build_ast(inner).map_or(
-                Err(DalaError::ParseError(ParseError {
+                Err(DalaError::BuildError(BuildError {
                     pos: pos.clone(),
                     message: "empty expression".to_string(),
                 })),
@@ -42,7 +42,7 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                     }))
                 },
             ),
-            None => Err(DalaError::ParseError(ParseError {
+            None => Err(DalaError::BuildError(BuildError {
                 pos,
                 message: "empty expression".to_string(),
             })),

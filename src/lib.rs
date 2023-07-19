@@ -37,31 +37,43 @@ impl fmt::Display for Position {
 
 #[derive(Debug, Clone)]
 pub enum DalaError {
-    EvalError(EvalError),
+    BuildError(BuildError),
+    RuntimeError(RuntimeError),
     ParseError(ParseError),
 }
 
 #[derive(Debug, Clone)]
-pub struct EvalError {
+pub struct RuntimeError {
     pub pos: Position,
     pub message: String,
 }
 
-impl fmt::Display for EvalError {
+impl fmt::Display for RuntimeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Evaluation error: {}, at: {}", self.message, self.pos)
+        write!(f, "Runtime error: {}, at: {}", self.message, self.pos)
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct BuildError {
+    pub pos: Position,
+    pub message: String,
+}
+
+impl fmt::Display for BuildError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Build error: {}, at: {}", self.message, self.pos)
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct ParseError {
-    pub pos: Position,
     pub message: String,
 }
 
 impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Parse error: {}, at: {}", self.message, self.pos)
+        write!(f, "Parse error: {}", self.message)
     }
 }
 
