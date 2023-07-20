@@ -5,7 +5,7 @@ pub mod eval_visitor;
 pub mod literal;
 pub mod upper;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum DalaExpression {
     Str(literal::Str),
     Num(literal::Num),

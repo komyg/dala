@@ -1,10 +1,16 @@
 use super::{eval_visitor::EvalVisitor, DalaExpression};
 use crate::{DalaError, DalaValue, Position};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Concat {
     pub pos: Position,
     pub children: Vec<Box<DalaExpression>>,
+}
+
+impl Concat {
+    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
+        Self { pos, children }
+    }
 }
 
 impl EvalVisitor for Concat {
