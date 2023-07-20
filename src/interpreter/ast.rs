@@ -11,8 +11,7 @@ use super::parser::Rule;
 
 fn build_children(pair: Pair<Rule>) -> Result<Vec<Box<DalaExpression>>, DalaError> {
     pair.into_inner()
-        .map(|inner| build_ast(inner))
-        .map(|child| child.and_then(|expr| Ok(Box::new(expr))))
+        .map(|inner| build_ast(inner).and_then(|expr| Ok(Box::new(expr))))
         .collect::<Result<Vec<Box<DalaExpression>>, DalaError>>()
 }
 
