@@ -27,5 +27,5 @@ functions = _{ upper | concat }
 arg  = _{ literals | functions }
 args = _{ arg ~ ("," ~ arg)* }
 
-upper  = { "UPPER" ~ "(" ~ literals ~ ")" }
+upper  = { "UPPER" ~ "(" ~ arg ~ ")" }
 concat = { "CONCAT" ~ "(" ~ args ~ ")" }

@@ -32,3 +32,14 @@ fn test_bool() {
         assert_eq!(value, "TRUE");
     });
 }
+
+#[test]
+fn test_expr() {
+    let result = eval_dala("UPPER(CONCAT(\"abc\", \"def\"))");
+    assert_eq!(result.len(), 1);
+
+    result.iter().for_each(|r| {
+        let DalaValue::Str(value) = r.as_ref().unwrap() else { panic!("Not a string") };
+        assert_eq!(value, "ABCDEF");
+    });
+}
