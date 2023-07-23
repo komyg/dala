@@ -23,10 +23,10 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
                 pos,
                 inner.as_str().to_string(),
             ))),
-            None => Err(DalaError::BuildError(BuildError {
+            None => Err(DalaError::BuildError(BuildError::new(
                 pos,
-                message: "Invalid empty string".to_string(),
-            })),
+                "Invalid empty string".to_string(),
+            ))),
         },
         Rule::number => Ok(DalaExpression::Num(Num::new(
             pos,
@@ -38,10 +38,10 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
         ))),
         Rule::upper => build_children(pair).and_then(|children| {
             if children.len() != 1 {
-                return Err(DalaError::BuildError(BuildError {
+                return Err(DalaError::BuildError(BuildError::new(
                     pos,
-                    message: "Upper must have only one child".to_string(),
-                }));
+                    "Upper must have only one child".to_string(),
+                )));
             }
 
             Ok(DalaExpression::Upper(Upper::new(pos, children[0].clone())))
