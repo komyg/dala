@@ -43,11 +43,11 @@ These primitive values are used as arguments and as return values from functions
 
 Each function can take primitive or other functions as arguments.
 
-| Function | Syntax                        | Example                                          | Description                                                  | Arguments                               |
-| -------- | ----------------------------- | ------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------- |
-| `CONCAT` | `CONCAT(a, b, c, ...) -> Str` | `CONCAT("Hello", " ", "World") -> "Hello World"` | Concatenates all the arguments together into a single string | One or more `Str` or `Num` or `Boolean` |
-| `SUM`    | `SUM(a, b, c, ...) -> Num`    | `SUM(1, 2, 3, 4, 5) -> 15`                       | Sums all the arguments together                              | One or more `Num`                       |
-| `UPPER`  | `UPPER(a) -> Str`             | `UPPER("Hello World") -> "HELLO WORLD"`          | Converts the string to upper case                            | One `Str` or `Num` or `Boolean`         |
+| Function | Example                                          | Description                                                  | Arguments                               |
+| -------- | ------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------- |
+| `CONCAT` | `CONCAT("Hello", " ", "World") -> "Hello World"` | Concatenates all the arguments together into a single string | One or more `Str` or `Num` or `Boolean` |
+| `SUM`    | `SUM(1, 2, 3, 4, 5) -> 15`                       | Sums all the arguments together                              | One or more `Num`                       |
+| `UPPER`  | `UPPER("Hello World") -> "HELLO WORLD"`          | Converts the string to upper case                            | One `Str` or `Num` or `Boolean`         |
 
 ### `CONCAT(a, b, c, ...) -> Str`
 
