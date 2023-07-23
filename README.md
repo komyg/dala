@@ -4,6 +4,31 @@ The Dala Formula Language is a light weight language, that is heavily inspired b
 
 It is currently a work in progress.
 
+## Rust API
+
+You can use the `dala::eval` To evaluate a Dala from expression inside a Rust program. For example:
+
+```rs
+use dala::{eval, DalaValue};
+
+let result = eval("CONCAT(\"Hello\", \" \", \"World\")");
+
+let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
+assert_eq!(value, "Hello World");
+```
+
+### The `eval` function
+
+The `eval` function takes a string slice and returns a `Vec<Result<DalaValue, DalaError>>`, with the result of each expression that was evaluated.
+
+The `DalaValue` enum represents the possible values that can be returned from a Dala expression: a `Str`, a `Num` or a `Boolean`.
+
+The `DalaError` enum represents the possible errors that can occur during the evaluation:
+
+- `BuildError`: returned when there is an processing the Dala Expression, before its evaluation.
+- `RuntimeError`: returned when there is an error during the evaluation of the Dala Expression.
+- `ParseError`: returned when there is an error parsing the Dala Expression.
+
 ## Primitives
 
 These primitive values are used as arguments and as return values from functions.
