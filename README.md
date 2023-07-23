@@ -43,6 +43,12 @@ These primitive values are used as arguments and as return values from functions
 
 Each function can take primitive or other functions as arguments.
 
+| Function | Syntax                        | Example                                          | Description                                                  | Arguments                                                 | Return Value |
+| -------- | ----------------------------- | ------------------------------------------------ | ------------------------------------------------------------ | --------------------------------------------------------- | ------------ |
+| `CONCAT` | `CONCAT(a, b, c, ...) -> Str` | `CONCAT("Hello", " ", "World") -> "Hello World"` | Concatenates all the arguments together into a single string | One or more arguments of type `Str` or `Num` or `Boolean` | `Str`        |
+| `SUM`    | `SUM(a, b, c, ...) -> Num`    | `SUM(1, 2, 3, 4, 5) -> 15`                       | Sums all the arguments together                              | One or more arguments of type `Num`                       | `Num`        |
+| `UPPER`  | `UPPER(a) -> Str`             | `UPPER("Hello World") -> "HELLO WORLD"`          | Converts the string to upper case                            | One argument of type `Str` or `Num` or `Boolean`          | `Str`        |
+
 ### `CONCAT(a, b, c, ...) -> Str`
 
 #### Description
