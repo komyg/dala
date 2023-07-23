@@ -5,6 +5,8 @@ mod interpreter;
 use interpreter::expr::eval_visitor::EvalVisitor;
 use interpreter::{ast::create_ast, parser::parse_dala};
 
+/// The result of a successful evaluation of a `DalaExpression`.
+/// It can be either a `String`, a `f64` or a `bool`.
 #[derive(Debug, Clone)]
 pub enum DalaValue {
     Str(String),
@@ -12,6 +14,7 @@ pub enum DalaValue {
     Boolean(bool),
 }
 
+/// Contains the position of a `DalaExpression` in the source code.
 #[derive(Debug, Clone)]
 pub struct Position {
     pub start: usize,
@@ -33,8 +36,7 @@ impl fmt::Display for Position {
     }
 }
 
-// Error Types
-
+/// The result of an unsuccessful evaluation of a `DalaExpression`.
 #[derive(Debug, Clone)]
 pub enum DalaError {
     BuildError(BuildError),
@@ -42,6 +44,7 @@ pub enum DalaError {
     ParseError(ParseError),
 }
 
+/// An error that occurs during the evaluation of a `DalaExpression`.
 #[derive(Debug, Clone)]
 pub struct RuntimeError {
     pub pos: Position,
@@ -60,6 +63,7 @@ impl fmt::Display for RuntimeError {
     }
 }
 
+/// An error that occurs when processing the a `DalaExpression`, before its evaluation.
 #[derive(Debug, Clone)]
 pub struct BuildError {
     pub pos: Position,
@@ -78,6 +82,7 @@ impl fmt::Display for BuildError {
     }
 }
 
+/// An error that occurs when parsing a `DalaExpression`.
 #[derive(Debug, Clone)]
 pub struct ParseError {
     pub message: String,
@@ -95,8 +100,17 @@ impl fmt::Display for ParseError {
     }
 }
 
-// Public functions
-
+/// Evaluates a `DalaExpression` and returns a `DalaValue` if the evaluation is successful or a `DalaError` if it is not.
+///
+/// # Examples
+///
+/// ```
+/// use dala::{eval_dala, DalaValue};
+///
+/// let result = eval_dala("CONCAT(\"Hello\", \" \", \"World\")");
+/// let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
+/// assert_eq!(value, "Hello World");
+/// ```
 pub fn eval_dala(str: &str) -> Vec<Result<DalaValue, DalaError>> {
     let parsed = parse_dala(str);
     if parsed.is_err() {
