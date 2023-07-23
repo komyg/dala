@@ -18,7 +18,7 @@ These primitive values are used as arguments and as return values from functions
 
 Each function can take primitive or other functions as arguments.
 
-### CONCAT(a, b, c, ...) -> Str
+### `CONCAT(a, b, c, ...) -> Str`
 
 #### Description
 
@@ -46,4 +46,58 @@ Non `Str` arguments will be implictly converted to `Str`, before being concatena
 
 ```dala
 CONCAT("Hello", " ", "World") -> "Hello World"
+```
+
+### `SUM(a, b, c, ...) -> Num`
+
+#### Description
+
+Sums all the arguments together.
+
+#### Arguments
+
+This function takes one or more arguments.
+
+| Name | Description                             | Type  |
+| ---- | --------------------------------------- | ----- |
+| a    | The first number to sum                 | `Num` |
+| b    | The second number to sum (optional)     | `Num` |
+| ...  | The rest of the numbers to sum (option) | `Num` |
+
+#### Return Value
+
+| Type  | Description             |
+| ----- | ----------------------- |
+| `Num` | All arguments summed up |
+
+#### Example
+
+```dala
+SUM(1, 2, 3, 4, 5) -> 15
+```
+
+### `UPPER(a) -> Str`
+
+#### Description
+
+Converts the string to upper case.
+
+#### Arguments
+
+Non `Str` arguments will be implictly converted to `Str`, before being concatenated.
+
+| Name | Description         | Type                        |
+| ---- | ------------------- | --------------------------- |
+| a    | The string to upper | `Str` or `Num` or `Boolean` |
+
+#### Return Value
+
+| Type  | Description        |
+| ----- | ------------------ |
+| `Str` | The upper case str |
+
+#### Example
+
+```dala
+UPPER("Hello World") -> "HELLO WORLD"
 ```
