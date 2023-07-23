@@ -1,8 +1,8 @@
-use dala::{eval_dala, DalaError, DalaValue};
+use dala::{eval, DalaError, DalaValue};
 
 #[test]
 fn test_sum() {
-    let result = eval_dala("SUM(1, 2, 3, 4, -5)");
+    let result = eval("SUM(1, 2, 3, 4, -5)");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Num(value) = result[0].as_ref().unwrap() else { panic!("Not a number") };
@@ -11,7 +11,7 @@ fn test_sum() {
 
 #[test]
 fn test_sum_with_single_arg() {
-    let result = eval_dala("SUM(1)");
+    let result = eval("SUM(1)");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Num(value) = result[0].as_ref().unwrap() else { panic!("Not a number") };
@@ -20,7 +20,7 @@ fn test_sum_with_single_arg() {
 
 #[test]
 fn test_sum_runtime_error_with_str_arg() {
-    let result = eval_dala("SUM(1, UPPER(\"2\"))");
+    let result = eval("SUM(1, UPPER(\"2\"))");
     assert_eq!(result.len(), 1);
 
     let DalaError::RuntimeError(err) = result[0].as_ref().unwrap_err() else { panic!("Not a number") };

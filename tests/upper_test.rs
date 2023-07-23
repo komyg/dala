@@ -1,8 +1,8 @@
-use dala::{eval_dala, DalaValue};
+use dala::{eval, DalaValue};
 
 #[test]
 fn test_str() {
-    let result = eval_dala("UPPER(\"abc\")");
+    let result = eval("UPPER(\"abc\")");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
@@ -11,7 +11,7 @@ fn test_str() {
 
 #[test]
 fn test_int() {
-    let result = eval_dala("UPPER(123)");
+    let result = eval("UPPER(123)");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
@@ -20,7 +20,7 @@ fn test_int() {
 
 #[test]
 fn test_bool() {
-    let result = eval_dala("UPPER(TRUE)");
+    let result = eval("UPPER(TRUE)");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
@@ -29,7 +29,7 @@ fn test_bool() {
 
 #[test]
 fn test_expr() {
-    let result = eval_dala("UPPER(CONCAT(\"abc\", \"def\"))");
+    let result = eval("UPPER(CONCAT(\"abc\", \"def\"))");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };

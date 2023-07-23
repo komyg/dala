@@ -1,8 +1,8 @@
-use dala::{eval_dala, DalaValue};
+use dala::{eval, DalaValue};
 
 #[test]
 fn test_concat_two_strings() {
-    let result = eval_dala("CONCAT(\"hello\", \"world\")");
+    let result = eval("CONCAT(\"hello\", \"world\")");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
@@ -11,7 +11,7 @@ fn test_concat_two_strings() {
 
 #[test]
 fn test_concat_multiple_literals() {
-    let result = eval_dala("CONCAT(\"hello\", \" \", 123, \" \", TRUE)");
+    let result = eval("CONCAT(\"hello\", \" \", 123, \" \", TRUE)");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
@@ -20,7 +20,7 @@ fn test_concat_multiple_literals() {
 
 #[test]
 fn test_with_nested_function() {
-    let result = eval_dala("CONCAT(\"hello\", \" \", UPPER(\"world\"))");
+    let result = eval("CONCAT(\"hello\", \" \", UPPER(\"world\"))");
     assert_eq!(result.len(), 1);
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };

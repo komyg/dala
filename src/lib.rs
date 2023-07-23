@@ -105,13 +105,13 @@ impl fmt::Display for ParseError {
 /// # Examples
 ///
 /// ```
-/// use dala::{eval_dala, DalaValue};
+/// use dala::{eval, DalaValue};
 ///
-/// let result = eval_dala("CONCAT(\"Hello\", \" \", \"World\")");
+/// let result = eval("CONCAT(\"Hello\", \" \", \"World\")");
 /// let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
 /// assert_eq!(value, "Hello World");
 /// ```
-pub fn eval_dala(str: &str) -> Vec<Result<DalaValue, DalaError>> {
+pub fn eval(str: &str) -> Vec<Result<DalaValue, DalaError>> {
     let parsed = parse_dala(str);
     if parsed.is_err() {
         return vec![Err(parsed.unwrap_err())];

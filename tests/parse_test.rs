@@ -1,8 +1,8 @@
-use dala::{eval_dala, DalaError};
+use dala::{eval, DalaError};
 
 #[test]
 fn test_invalid_syntax() {
-    let result = eval_dala("UPPER(\"abc)");
+    let result = eval("UPPER(\"abc)");
     assert_eq!(result.len(), 1);
 
     let DalaError::ParseError(parse_error) = result[0].as_ref().unwrap_err() else { panic!("Not a parse error") };
