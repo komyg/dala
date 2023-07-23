@@ -22,10 +22,14 @@ boolean = { "TRUE" | "FALSE" }
 literals = _{ string | number | boolean }
 
 // Functions
-functions = _{ upper | concat }
+functions = _{ upper | concat | sum }
 
 arg  = _{ literals | functions }
 args = _{ arg ~ ("," ~ arg)* }
 
+num_arg  = _{ number | functions }
+num_args = _{ num_arg ~ ("," ~ num_arg)* }
+
 upper  = { "UPPER" ~ "(" ~ arg ~ ")" }
 concat = { "CONCAT" ~ "(" ~ args ~ ")" }
+sum    = { "SUM" ~ "(" ~ num_args ~ ")" }

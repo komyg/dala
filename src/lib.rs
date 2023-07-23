@@ -48,6 +48,12 @@ pub struct RuntimeError {
     pub message: String,
 }
 
+impl RuntimeError {
+    pub fn new(pos: Position, message: String) -> Self {
+        Self { pos, message }
+    }
+}
+
 impl fmt::Display for RuntimeError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Runtime error: {}, at: {}", self.message, self.pos)
@@ -60,6 +66,12 @@ pub struct BuildError {
     pub message: String,
 }
 
+impl BuildError {
+    pub fn new(pos: Position, message: String) -> Self {
+        Self { pos, message }
+    }
+}
+
 impl fmt::Display for BuildError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Build error: {}, at: {}", self.message, self.pos)
@@ -69,6 +81,12 @@ impl fmt::Display for BuildError {
 #[derive(Debug, Clone)]
 pub struct ParseError {
     pub message: String,
+}
+
+impl ParseError {
+    pub fn new(message: String) -> Self {
+        Self { message }
+    }
 }
 
 impl fmt::Display for ParseError {
