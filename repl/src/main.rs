@@ -14,8 +14,8 @@ fn main() {
         result
             .into_iter()
             .for_each(|dala_result| match dala_result {
-                Ok(value) => println!("=> {}", value),
-                Err(err) => println!("=> {}", err),
+                Ok(value) => println!("{}", value),
+                Err(err) => println!("{}", err),
             });
     }
 }
