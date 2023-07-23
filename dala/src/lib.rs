@@ -14,6 +14,16 @@ pub enum DalaValue {
     Boolean(bool),
 }
 
+impl fmt::Display for DalaValue {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            DalaValue::Str(value) => write!(f, "{}", value),
+            DalaValue::Num(value) => write!(f, "{}", value),
+            DalaValue::Boolean(value) => write!(f, "{}", value),
+        }
+    }
+}
+
 /// Contains the position of a `DalaExpression` in the source code.
 #[derive(Debug, Clone)]
 pub struct Position {
@@ -42,6 +52,16 @@ pub enum DalaError {
     BuildError(BuildError),
     RuntimeError(RuntimeError),
     ParseError(ParseError),
+}
+
+impl fmt::Display for DalaError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            DalaError::BuildError(err) => write!(f, "{}", err),
+            DalaError::RuntimeError(err) => write!(f, "{}", err),
+            DalaError::ParseError(err) => write!(f, "{}", err),
+        }
+    }
 }
 
 /// An error that occurs during the evaluation of a `DalaExpression`.
