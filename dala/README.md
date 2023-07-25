@@ -44,6 +44,31 @@ Non `Str` arguments will be implictly converted to `Str`, before being concatena
 CONCAT("Hello", " ", "World") -> "Hello World"
 ```
 
+### `DIVIDE(a, b) -> Num`
+
+#### Description
+
+Divide the first argument by the second one.
+
+#### Arguments
+
+| Name | Description  | Type  |
+| ---- | ------------ | ----- |
+| a    | The dividend | `Num` |
+| b    | The divisor  | `Num` |
+
+#### Return Value
+
+| Type  | Description         |
+| ----- | ------------------- |
+| `Num` | The division result |
+
+#### Example
+
+```dala
+DIVIDE(10, 2) -> 5
+```
+
 ### `MULTIPLY(a, b) -> Num`
 
 #### Description
