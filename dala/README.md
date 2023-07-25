@@ -44,6 +44,33 @@ Non `Str` arguments will be implictly converted to `Str`, before being concatena
 CONCAT("Hello", " ", "World") -> "Hello World"
 ```
 
+### `SUBTRACT(a, b) -> Num`
+
+#### Description
+
+Subtract the second argument from the first one.
+
+#### Arguments
+
+This function takes one or more arguments.
+
+| Name | Description         | Type  |
+| ---- | ------------------- | ----- |
+| a    | The first argument  | `Num` |
+| b    | The second argument | `Num` |
+
+#### Return Value
+
+| Type  | Description            |
+| ----- | ---------------------- |
+| `Num` | The subtraction result |
+
+#### Example
+
+```dala
+SUBTRACT(1, 2) -> -1
+```
+
 ### `SUM(a, b, c, ...) -> Num`
 
 #### Description
