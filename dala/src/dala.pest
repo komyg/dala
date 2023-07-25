@@ -1,35 +1,35 @@
-dala = _{ SOI ~ functions* ~ eoi }
+DALA = _{ SOI ~ FUNCTIONS* ~ eoi }
 
 // Ignore EOI (https://github.com/pest-parser/pest/issues/304)
 eoi = _{ !ANY }
 
 WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 
-string = ${ "\"" ~ inner ~ "\"" }
-inner  = @{ char* }
-char   =  {
+STRING = ${ "\"" ~ INNER ~ "\"" }
+INNER  = @{ CHAR* }
+CHAR   =  {
     !("\"" | "\\") ~ ANY
   | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
   | "\\" ~ ("u" ~ ASCII_HEX_DIGIT{4})
 }
 
-number = @{
+NUMBER = @{
     "-"? ~ ("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*) ~ ("." ~ ASCII_DIGIT*)?
 }
 
-boolean = { "TRUE" | "FALSE" }
+BOOLEAN = { "TRUE" | "FALSE" }
 
-literals = _{ string | number | boolean }
+LITERALS = _{ STRING | NUMBER | BOOLEAN }
 
 // Functions
-functions = _{ upper | concat | sum }
+FUNCTIONS = _{ UPPER | CONCAT | SUM }
 
-arg  = _{ literals | functions }
-args = _{ arg ~ ("," ~ arg)* }
+ARG  = _{ LITERALS | FUNCTIONS }
+ARGS = _{ ARG ~ ("," ~ ARG)* }
 
-num_arg  = _{ number | functions }
-num_args = _{ num_arg ~ ("," ~ num_arg)* }
+NUM_ARG  = _{ NUMBER | FUNCTIONS }
+NUM_ARGS = _{ NUM_ARG ~ ("," ~ NUM_ARG)* }
 
-upper  = { "UPPER" ~ "(" ~ arg ~ ")" }
-concat = { "CONCAT" ~ "(" ~ args ~ ")" }
-sum    = { "SUM" ~ "(" ~ num_args ~ ")" }
+UPPER  = { "UPPER" ~ "(" ~ ARG ~ ")" }
+CONCAT = { "CONCAT" ~ "(" ~ ARGS ~ ")" }
+SUM    = { "SUM" ~ "(" ~ NUM_ARGS ~ ")" }
