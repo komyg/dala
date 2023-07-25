@@ -3,7 +3,7 @@ name = "dala"
 version = "0.1.0"
 edition = "2021"
 description = "Dalia is a light weight formula language."
-license-file = "../LICENSE"
+license = "MIT"
 repository = "https://github.com/komyg/dala"
 
 
