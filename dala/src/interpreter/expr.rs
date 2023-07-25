@@ -3,6 +3,7 @@ use crate::{DalaError, DalaValue};
 pub mod concat;
 pub mod eval_visitor;
 pub mod literal;
+pub mod mutiply;
 pub mod subtract;
 pub mod sum;
 pub mod upper;
@@ -13,6 +14,7 @@ pub enum DalaExpression {
     Bool(literal::Bool),
     Num(literal::Num),
     Str(literal::Str),
+    Multiply(mutiply::Multiply),
     Subtract(subtract::Subtract),
     Sum(sum::Sum),
     Upper(upper::Upper),
@@ -25,6 +27,7 @@ impl eval_visitor::EvalVisitor for DalaExpression {
             DalaExpression::Bool(expr) => expr.eval(),
             DalaExpression::Num(expr) => expr.eval(),
             DalaExpression::Str(expr) => expr.eval(),
+            DalaExpression::Multiply(expr) => expr.eval(),
             DalaExpression::Subtract(expr) => expr.eval(),
             DalaExpression::Sum(expr) => expr.eval(),
             DalaExpression::Upper(expr) => expr.eval(),

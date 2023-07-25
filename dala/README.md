@@ -44,6 +44,31 @@ Non `Str` arguments will be implictly converted to `Str`, before being concatena
 CONCAT("Hello", " ", "World") -> "Hello World"
 ```
 
+### `MULTIPLY(a, b) -> Num`
+
+#### Description
+
+Multiplies the arguments.
+
+#### Arguments
+
+| Name | Description         | Type  |
+| ---- | ------------------- | ----- |
+| a    | The first argument  | `Num` |
+| b    | The second argument | `Num` |
+
+#### Return Value
+
+| Type  | Description               |
+| ----- | ------------------------- |
+| `Num` | The multiplication result |
+
+#### Example
+
+```dala
+MULTIPLY(5, 2) -> 10
+```
+
 ### `SUBTRACT(a, b) -> Num`
 
 #### Description

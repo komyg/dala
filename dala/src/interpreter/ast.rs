@@ -2,7 +2,7 @@ use pest::iterators::{Pair, Pairs};
 
 use crate::interpreter::{
     expr::concat::Concat, expr::literal::Bool, expr::literal::Num, expr::literal::Str,
-    expr::subtract::Subtract, expr::sum::Sum, expr::upper::Upper,
+    expr::mutiply::Multiply, expr::subtract::Subtract, expr::sum::Sum, expr::upper::Upper,
 };
 use crate::{BuildError, DalaError, Position};
 
@@ -48,10 +48,12 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
         }),
         Rule::CONCAT => build_children(pair)
             .and_then(|children| Ok(DalaExpression::Concat(Concat::new(pos, children)))),
-        Rule::SUM => build_children(pair)
-            .and_then(|children| Ok(DalaExpression::Sum(Sum::new(pos, children)))),
+        Rule::MULTIPLY => build_children(pair)
+            .and_then(|children| Ok(DalaExpression::Multiply(Multiply::new(pos, children)))),
         Rule::SUBTRACT => build_children(pair)
             .and_then(|children| Ok(DalaExpression::Subtract(Subtract::new(pos, children)))),
+        Rule::SUM => build_children(pair)
+            .and_then(|children| Ok(DalaExpression::Sum(Sum::new(pos, children)))),
         Rule::DALA
         | Rule::INNER
         | Rule::CHAR

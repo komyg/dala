@@ -59,6 +59,7 @@ Each function can take primitive or other functions as arguments.
 | Function   | Syntax                        | Example                                          | Description                                                  |
 | ---------- | ----------------------------- | ------------------------------------------------ | ------------------------------------------------------------ |
 | `CONCAT`   | `CONCAT(a, b, c, ...) -> Str` | `CONCAT("Hello", " ", "World") -> "Hello World"` | Concatenates all the arguments together into a single string |
+| `MULTIPLY` | `MULTIPLY(a, b) -> Num`       | `MULTIPLY(5, 2) -> 10`                           | Multiplies the arguments                                     |
 | `SUBTRACT` | `SUBTRACT(a, b) -> Num`       | `SUBTRACT(1, 2) -> -1`                           | Subtracts the second argument from the first                 |
 | `SUM`      | `SUM(a, b, c, ...) -> Num`    | `SUM(1, 2, 3, 4, 5) -> 15`                       | Sums all the arguments together                              |
 | `UPPER`    | `UPPER(a) -> Str`             | `UPPER("Hello World") -> "HELLO WORLD"`          | Converts the string to upper case                            |
