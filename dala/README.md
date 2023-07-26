@@ -69,6 +69,36 @@ Divide the first argument by the second one.
 DIVIDE(10, 2) -> 5
 ```
 
+### `IF(condition, if_true, if_false) -> Literal`
+
+#### Description
+
+If the condition is true, evaluates the `if_true`, otherwise evaluates the `if_false`.
+
+#### Arguments
+
+This function takes one or more arguments.
+
+Non `Str` arguments will be implictly converted to `Str`, before being concatenated.
+
+| Name      | Description                                | Type                        |
+| --------- | ------------------------------------------ | --------------------------- |
+| condition | Boolean or function that returns a boolean | `Boolean`                   |
+| if_true   | Evaluated if `condition` is `TRUE`         | `Str` or `Num` or `Boolean` |
+| if_false  | Evaluated if `condition` is `FALSE`        | `Str` or `Num` or `Boolean` |
+
+#### Return Value
+
+| Type                        | Description                                                             |
+| --------------------------- | ----------------------------------------------------------------------- |
+| `Str` or `Num` or `Boolean` | The result of evaluating the contents of either `if_true` or `if_false` |
+
+#### Example
+
+```dala
+`IF(TRUE, "Hello", "World") -> "World"`
+```
+
 ### `MULTIPLY(a, b) -> Num`
 
 #### Description

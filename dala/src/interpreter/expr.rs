@@ -3,6 +3,7 @@ use crate::{DalaError, DalaValue};
 pub mod concat;
 pub mod divide;
 pub mod eval_visitor;
+pub mod if_conditional;
 pub mod literal;
 pub mod mutiply;
 pub mod subtract;
@@ -13,6 +14,7 @@ pub mod upper;
 pub enum DalaExpression {
     Concat(concat::Concat),
     Divide(divide::Divide),
+    IfConditional(if_conditional::IfConditional),
     Bool(literal::Bool),
     Num(literal::Num),
     Str(literal::Str),
@@ -27,6 +29,7 @@ impl eval_visitor::EvalVisitor for DalaExpression {
         match self {
             DalaExpression::Concat(expr) => expr.eval(),
             DalaExpression::Divide(expr) => expr.eval(),
+            DalaExpression::IfConditional(expr) => expr.eval(),
             DalaExpression::Bool(expr) => expr.eval(),
             DalaExpression::Num(expr) => expr.eval(),
             DalaExpression::Str(expr) => expr.eval(),

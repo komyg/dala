@@ -1,8 +1,8 @@
 use pest::iterators::{Pair, Pairs};
 
 use crate::interpreter::expr::{
-    concat::Concat, divide::Divide, literal::Bool, literal::Num, literal::Str, mutiply::Multiply,
-    subtract::Subtract, sum::Sum, upper::Upper,
+    concat::Concat, divide::Divide, if_conditional::IfConditional, literal::Bool, literal::Num,
+    literal::Str, mutiply::Multiply, subtract::Subtract, sum::Sum, upper::Upper,
 };
 use crate::{BuildError, DalaError, Position};
 
@@ -22,6 +22,11 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
             .and_then(|children| Ok(DalaExpression::Concat(Concat::new(pos, children)))),
         Rule::DIVIDE => build_children(pair)
             .and_then(|children| Ok(DalaExpression::Divide(Divide::new(pos, children)))),
+        Rule::IF => build_children(pair).and_then(|children| {
+            Ok(DalaExpression::IfConditional(IfConditional::new(
+                pos, children,
+            )))
+        }),
         Rule::STRING => match pair.into_inner().next() {
             Some(inner) => Ok(DalaExpression::Str(Str::new(
                 pos,
@@ -58,6 +63,7 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
             .and_then(|children| Ok(DalaExpression::Sum(Sum::new(pos, children)))),
         Rule::DALA
         | Rule::INNER
+        | Rule::BOOLEAN_ARG
         | Rule::CHAR
         | Rule::WHITESPACE
         | Rule::FUNCTIONS
