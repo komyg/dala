@@ -17,9 +17,9 @@ pub enum DalaValue {
 impl fmt::Display for DalaValue {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            DalaValue::Str(value) => write!(f, "{}", value),
+            DalaValue::Str(value) => write!(f, "\"{}\"", value),
             DalaValue::Num(value) => write!(f, "{}", value),
-            DalaValue::Boolean(value) => write!(f, "{}", value),
+            DalaValue::Boolean(value) => write!(f, "{}", value.to_string().to_uppercase()),
         }
     }
 }
