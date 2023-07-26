@@ -1,8 +1,8 @@
 use pest::iterators::{Pair, Pairs};
 
 use crate::interpreter::expr::{
-    concat::Concat, divide::Divide, if_conditional::IfConditional, literal::Bool, literal::Num,
-    literal::Str, mutiply::Multiply, subtract::Subtract, sum::Sum, upper::Upper,
+    comparison::Eq, concat::Concat, divide::Divide, if_conditional::IfConditional, literal::Bool,
+    literal::Num, literal::Str, mutiply::Multiply, subtract::Subtract, sum::Sum, upper::Upper,
 };
 use crate::{BuildError, DalaError, Position};
 
@@ -18,6 +18,9 @@ fn build_children(pair: Pair<Rule>) -> Result<Vec<Box<DalaExpression>>, DalaErro
 fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
     let pos = Position::new(pair.as_span());
     match pair.as_rule() {
+        Rule::EQ => {
+            build_children(pair).and_then(|children| Ok(DalaExpression::Eq(Eq::new(pos, children))))
+        }
         Rule::CONCAT => build_children(pair)
             .and_then(|children| Ok(DalaExpression::Concat(Concat::new(pos, children)))),
         Rule::DIVIDE => build_children(pair)

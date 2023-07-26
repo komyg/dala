@@ -1,5 +1,6 @@
 use crate::{DalaError, DalaValue};
 
+pub mod comparison;
 pub mod concat;
 pub mod divide;
 pub mod eval_visitor;
@@ -12,6 +13,7 @@ pub mod upper;
 
 #[derive(Debug, Clone)]
 pub enum DalaExpression {
+    Eq(comparison::Eq),
     Concat(concat::Concat),
     Divide(divide::Divide),
     IfConditional(if_conditional::IfConditional),
@@ -27,6 +29,7 @@ pub enum DalaExpression {
 impl eval_visitor::EvalVisitor for DalaExpression {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         match self {
+            DalaExpression::Eq(expr) => expr.eval(),
             DalaExpression::Concat(expr) => expr.eval(),
             DalaExpression::Divide(expr) => expr.eval(),
             DalaExpression::IfConditional(expr) => expr.eval(),
