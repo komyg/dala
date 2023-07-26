@@ -14,6 +14,32 @@ These primitive values are used as arguments and as return values from functions
 | `Num`     | A number                                         | `1`, `2.5`, `3.1415` |
 | `Boolean` | A boolean value                                  | `TRUE`, `FALSE`      |
 
+### `EQ(a, b) -> Boolean`
+
+#### Description
+
+Returns `TRUE` if the arguments are equal, otherwise returns `FALSE`.
+
+#### Arguments
+
+| Name | Description                    | Type                        |
+| ---- | ------------------------------ | --------------------------- |
+| a    | The first argument to compare  | `Str` or `Num` or `Boolean` |
+| b    | The second argument to compare | `Str` or `Num` or `Boolean` |
+
+#### Return Value
+
+| Type      | Description           |
+| --------- | --------------------- |
+| `Boolean` | The comparison result |
+
+#### Example
+
+```dala
+EQ(1,1) -> TRUE
+
+```
+
 ### `CONCAT(a, b, c, ...) -> Str`
 
 #### Description
