@@ -14,6 +14,7 @@ pub mod upper;
 #[derive(Debug, Clone)]
 pub enum DalaExpression {
     Eq(comparison::Eq),
+    Neq(comparison::Neq),
     Concat(concat::Concat),
     Divide(divide::Divide),
     IfConditional(if_conditional::IfConditional),
@@ -30,6 +31,7 @@ impl eval_visitor::EvalVisitor for DalaExpression {
     fn eval(&self) -> Result<DalaValue, DalaError> {
         match self {
             DalaExpression::Eq(expr) => expr.eval(),
+            DalaExpression::Neq(expr) => expr.eval(),
             DalaExpression::Concat(expr) => expr.eval(),
             DalaExpression::Divide(expr) => expr.eval(),
             DalaExpression::IfConditional(expr) => expr.eval(),

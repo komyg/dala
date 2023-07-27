@@ -59,6 +59,7 @@ Each function can take primitive or other functions as arguments.
 | Function   | Syntax                                    | Example                                          | Description                                                                   |
 | ---------- | ----------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------------- |
 | `EQ`       | `EQ(a, b) -> Boolean`                     | `EQ(1, 1) -> TRUE`                               | Returns `TRUE` if the arguments are equal, otherwise returns `FALSE`          |
+| `NEQ`      | `EQ(a, b) -> Boolean`                     | `EQ(1, 1) -> FALSE`                              | Returns `TRUE` if the arguments are different, otherwise returns `FALSE`      |
 | `CONCAT`   | `CONCAT(a, b, c, ...) -> Str`             | `CONCAT("Hello", " ", "World") -> "Hello World"` | Concatenates all the arguments together into a single string                  |
 | `DIVIDE`   | `DIVIDE(a, b) -> Num`                     | `DIVIDE(10, 2) -> 5`                             | Divides the first argument by the second argument                             |
 | `IF`       | `IF(condition, if_true, if_false) -> Lit` | `IF(TRUE, "Hello", "World") -> "World"`          | If the condition is true, evaluates `if_true`, otherwise evaluates `if_false` |

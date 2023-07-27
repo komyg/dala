@@ -22,7 +22,7 @@ BOOLEAN = { "TRUE" | "FALSE" }
 LITERALS = _{ STRING | NUMBER | BOOLEAN }
 
 // Functions
-FUNCTIONS = _{ EQ | CONCAT | DIVIDE | IF | MULTIPLY | SUBTRACT | SUM | UPPER }
+FUNCTIONS = _{ EQ | NEQ | CONCAT | DIVIDE | IF | MULTIPLY | SUBTRACT | SUM | UPPER }
 
 ARG  = _{ LITERALS | FUNCTIONS }
 ARGS = _{ ARG ~ ("," ~ ARG)* }
@@ -33,6 +33,7 @@ NUM_ARGS = _{ NUM_ARG ~ ("," ~ NUM_ARG)* }
 BOOLEAN_ARG = _{ BOOLEAN | FUNCTIONS }
 
 EQ       = { "EQ" ~ "(" ~ ARG ~ "," ~ ARG ~ ")" }
+NEQ      = { "NEQ" ~ "(" ~ ARG ~ "," ~ ARG ~ ")" }
 CONCAT   = { "CONCAT" ~ "(" ~ ARGS ~ ")" }
 DIVIDE   = { "DIVIDE" ~ "(" ~ NUM_ARG ~ "," ~ NUM_ARG ~ ")" }
 IF       = { "IF" ~ "(" ~ BOOLEAN_ARG ~ "," ~ ARG ~ "," ~ ARG ~ ")" }

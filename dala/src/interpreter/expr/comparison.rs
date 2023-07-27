@@ -1,6 +1,30 @@
 use super::{eval_visitor::EvalVisitor, DalaExpression};
 use crate::{DalaError, DalaValue, Position, RuntimeError};
 
+#[derive(Debug, Clone)]
+pub struct Eq {
+    pub pos: Position,
+    pub children: Vec<Box<DalaExpression>>,
+}
+
+impl Eq {
+    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
+        Self { pos, children }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct Neq {
+    pub pos: Position,
+    pub children: Vec<Box<DalaExpression>>,
+}
+
+impl Neq {
+    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
+        Self { pos, children }
+    }
+}
+
 fn get_values(
     pos: &Position,
     children: &Vec<Box<DalaExpression>>,
@@ -20,25 +44,6 @@ fn get_values(
             .eval()
             .and_then(|right_value| Ok([left_value, right_value]))
     })
-}
-
-#[derive(Debug, Clone)]
-pub struct Eq {
-    pub pos: Position,
-    pub children: Vec<Box<DalaExpression>>,
-}
-
-impl Eq {
-    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
-        Self { pos, children }
-    }
-}
-
-impl EvalVisitor for Eq {
-    fn eval(&self) -> Result<DalaValue, DalaError> {
-        get_values(&self.pos, &self.children)
-            .and_then(|[left_value, right_value]| equals(&left_value, &right_value, &self.pos))
-    }
 }
 
 macro_rules! create_compare_fn {
@@ -63,4 +68,20 @@ macro_rules! create_compare_fn {
     };
 }
 
+macro_rules! impl_eval_visitor {
+    ($struct_name:ident, $comparison:ident) => {
+        impl EvalVisitor for $struct_name {
+            fn eval(&self) -> Result<DalaValue, DalaError> {
+                get_values(&self.pos, &self.children).and_then(|[left_value, right_value]| {
+                    $comparison(&left_value, &right_value, &self.pos)
+                })
+            }
+        }
+    };
+}
+
 create_compare_fn!(equals, ==);
+create_compare_fn!(not_equals, !=);
+
+impl_eval_visitor!(Eq, equals);
+impl_eval_visitor!(Neq, not_equals);

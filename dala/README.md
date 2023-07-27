@@ -40,6 +40,32 @@ EQ(1,1) -> TRUE
 
 ```
 
+### `NEQ(a, b) -> Boolean`
+
+#### Description
+
+Returns `TRUE` if the arguments are different, otherwise returns `FALSE`.
+
+#### Arguments
+
+| Name | Description                    | Type                        |
+| ---- | ------------------------------ | --------------------------- |
+| a    | The first argument to compare  | `Str` or `Num` or `Boolean` |
+| b    | The second argument to compare | `Str` or `Num` or `Boolean` |
+
+#### Return Value
+
+| Type      | Description           |
+| --------- | --------------------- |
+| `Boolean` | The comparison result |
+
+#### Example
+
+```dala
+EQ(1,1) -> FALSE
+
+```
+
 ### `CONCAT(a, b, c, ...) -> Str`
 
 #### Description
