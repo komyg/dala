@@ -6,6 +6,7 @@ pub mod divide;
 pub mod eval_visitor;
 pub mod if_conditional;
 pub mod literal;
+pub mod macros;
 pub mod mutiply;
 pub mod subtract;
 pub mod sum;

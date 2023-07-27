@@ -1,29 +1,8 @@
-use super::{eval_visitor::EvalVisitor, DalaExpression};
+use super::{eval_visitor::EvalVisitor, macros::create_expr_struct, DalaExpression};
 use crate::{DalaError, DalaValue, Position, RuntimeError};
 
-#[derive(Debug, Clone)]
-pub struct Eq {
-    pub pos: Position,
-    pub children: Vec<Box<DalaExpression>>,
-}
-
-impl Eq {
-    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
-        Self { pos, children }
-    }
-}
-
-#[derive(Debug, Clone)]
-pub struct Neq {
-    pub pos: Position,
-    pub children: Vec<Box<DalaExpression>>,
-}
-
-impl Neq {
-    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
-        Self { pos, children }
-    }
-}
+create_expr_struct!(Eq);
+create_expr_struct!(Neq);
 
 fn get_values(
     pos: &Position,
