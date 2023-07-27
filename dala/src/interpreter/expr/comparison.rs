@@ -36,25 +36,31 @@ impl Eq {
 
 impl EvalVisitor for Eq {
     fn eval(&self) -> Result<DalaValue, DalaError> {
-        get_values(&self.pos, &self.children).and_then(|[left_value, right_value]| {
-            match (left_value, right_value) {
-                (DalaValue::Boolean(left), DalaValue::Boolean(right)) => {
-                    Ok(DalaValue::Boolean(left == right))
-                }
-                (DalaValue::Num(left), DalaValue::Num(right)) => {
-                    Ok(DalaValue::Boolean(left == right))
-                }
-                (DalaValue::Str(left), DalaValue::Str(right)) => {
-                    Ok(DalaValue::Boolean(left == right))
-                }
-                (left, right) => Err(DalaError::RuntimeError(RuntimeError::new(
-                    self.pos.clone(),
-                    format!(
-                        "Eq must have two arguments of the same type, found {} and {}",
-                        left, right
-                    ),
-                ))),
-            }
-        })
+        get_values(&self.pos, &self.children)
+            .and_then(|[left_value, right_value]| equals(&left_value, &right_value, &self.pos))
     }
 }
+
+macro_rules! create_compare_fn {
+    ($func_name:ident, $op:tt) => {
+        fn $func_name(left: &DalaValue, right: &DalaValue, pos: &Position) -> Result<DalaValue, DalaError> {
+            match (left, right) {
+                (DalaValue::Boolean(left), DalaValue::Boolean(right)) => {
+                    Ok(DalaValue::Boolean(left $op right))
+                }
+                (DalaValue::Num(left), DalaValue::Num(right)) => {
+                    Ok(DalaValue::Boolean(left $op right))
+                }
+                (DalaValue::Str(left), DalaValue::Str(right)) => {
+                    Ok(DalaValue::Boolean(left $op right))
+                }
+                (left, right) => Err(DalaError::RuntimeError(RuntimeError::new(
+                    pos.clone(),
+                    format!("Arguments of the same type, found {} and {}", left, right),
+                ))),
+            }
+        }
+    };
+}
+
+create_compare_fn!(equals, ==);
