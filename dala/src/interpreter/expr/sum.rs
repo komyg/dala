@@ -1,20 +1,11 @@
 use super::{
     eval_visitor::{eval_children, EvalVisitor},
+    macros::create_expr_struct,
     DalaExpression,
 };
 use crate::{DalaError, DalaValue, Position, RuntimeError};
 
-#[derive(Debug, Clone)]
-pub struct Sum {
-    pub pos: Position,
-    pub children: Vec<Box<DalaExpression>>,
-}
-
-impl Sum {
-    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
-        Self { pos, children }
-    }
-}
+create_expr_struct!(Sum);
 
 impl EvalVisitor for Sum {
     fn eval(&self) -> Result<DalaValue, DalaError> {

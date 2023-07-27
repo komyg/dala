@@ -1,17 +1,9 @@
-use super::{eval_visitor::EvalVisitor, DalaExpression};
+use super::{eval_visitor::EvalVisitor, macros::create_expr_struct, DalaExpression};
 use crate::{DalaError, DalaValue, Position, RuntimeError};
 
-#[derive(Debug, Clone)]
-pub struct IfConditional {
-    pub pos: Position,
-    pub children: Vec<Box<DalaExpression>>,
-}
+create_expr_struct!(IfConditional);
 
 impl IfConditional {
-    pub fn new(pos: Position, children: Vec<Box<DalaExpression>>) -> Self {
-        Self { pos, children }
-    }
-
     fn eval_conditional(&self, condition: &Box<DalaExpression>) -> Result<bool, DalaError> {
         let result = condition.eval();
         result.and_then(|value| match value {
