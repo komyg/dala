@@ -1,5 +1,6 @@
 use core::fmt;
 use pest::Span;
+use std::collections::HashMap;
 
 mod interpreter;
 use interpreter::expr::eval_visitor::EvalVisitor;
@@ -137,7 +138,22 @@ pub fn eval(str: &str) -> Vec<Result<DalaValue, DalaError>> {
         return vec![Err(parsed.unwrap_err())];
     }
 
-    create_ast(parsed.unwrap())
+    create_ast(parsed.unwrap(), &HashMap::new())
+        .into_iter()
+        .map(|expr| expr.and_then(|expr| expr.eval()))
+        .collect()
+}
+
+pub fn eval_with_data(
+    str: &str,
+    data: &HashMap<&str, &DalaValue>,
+) -> Vec<Result<DalaValue, DalaError>> {
+    let parsed = parse_dala(str);
+    if parsed.is_err() {
+        return vec![Err(parsed.unwrap_err())];
+    }
+
+    create_ast(parsed.unwrap(), data)
         .into_iter()
         .map(|expr| expr.and_then(|expr| expr.eval()))
         .collect()

@@ -19,7 +19,9 @@ NUMBER = @{
 
 BOOLEAN = { "TRUE" | "FALSE" }
 
-LITERALS = _{ STRING | NUMBER | BOOLEAN }
+REF = @{ "$" ~ ASCII_NONZERO_DIGIT ~ ASCII_DIGIT* }
+
+LITERALS = _{ STRING | NUMBER | BOOLEAN | REF }
 
 // Functions
 FUNCTIONS = _{ EQ | NEQ | CONCAT | DIVIDE | IF | MULTIPLY | SUBTRACT | SUM | UPPER }
@@ -27,10 +29,10 @@ FUNCTIONS = _{ EQ | NEQ | CONCAT | DIVIDE | IF | MULTIPLY | SUBTRACT | SUM | UPP
 ARG  = _{ LITERALS | FUNCTIONS }
 ARGS = _{ ARG ~ ("," ~ ARG)* }
 
-NUM_ARG  = _{ NUMBER | FUNCTIONS }
+NUM_ARG  = _{ NUMBER | REF | FUNCTIONS }
 NUM_ARGS = _{ NUM_ARG ~ ("," ~ NUM_ARG)* }
 
-BOOLEAN_ARG = _{ BOOLEAN | FUNCTIONS }
+BOOLEAN_ARG = _{ BOOLEAN | REF | FUNCTIONS }
 
 EQ       = { "EQ" ~ "(" ~ ARG ~ "," ~ ARG ~ ")" }
 NEQ      = { "NEQ" ~ "(" ~ ARG ~ "," ~ ARG ~ ")" }
