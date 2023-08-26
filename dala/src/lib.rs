@@ -1,5 +1,6 @@
 use core::fmt;
 use pest::Span;
+use std::collections::HashMap;
 
 mod interpreter;
 use interpreter::expr::eval_visitor::EvalVisitor;
@@ -137,7 +138,40 @@ pub fn eval(str: &str) -> Vec<Result<DalaValue, DalaError>> {
         return vec![Err(parsed.unwrap_err())];
     }
 
-    create_ast(parsed.unwrap())
+    create_ast(parsed.unwrap(), &HashMap::new())
+        .into_iter()
+        .map(|expr| expr.and_then(|expr| expr.eval()))
+        .collect()
+}
+
+/// Evaluates a `DalaExpression` with the provied dataset and returns a `DalaValue` if the evaluation is successful or a `DalaError` if it is not.
+///
+/// # Examples
+///
+/// ```
+/// use std::collections::HashMap;
+/// use dala::{eval_with_data, DalaValue};
+///
+/// let result = eval_with_data(
+///     "CONCAT($var1, $2)",
+///     &HashMap::from([
+///         ("$var1", &DalaValue::Str("hello".to_string())),
+///         ("$2", &DalaValue::Str("world".to_string())),
+///     ]),
+/// );
+/// let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
+/// assert_eq!(value, "helloworld");
+/// ```
+pub fn eval_with_data(
+    str: &str,
+    data: &HashMap<&str, &DalaValue>,
+) -> Vec<Result<DalaValue, DalaError>> {
+    let parsed = parse_dala(str);
+    if parsed.is_err() {
+        return vec![Err(parsed.unwrap_err())];
+    }
+
+    create_ast(parsed.unwrap(), data)
         .into_iter()
         .map(|expr| expr.and_then(|expr| expr.eval()))
         .collect()

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use pest::iterators::{Pair, Pairs};
 
 use crate::interpreter::expr::{
@@ -5,30 +7,35 @@ use crate::interpreter::expr::{
     literal::Bool, literal::Num, literal::Str, mutiply::Multiply, subtract::Subtract, sum::Sum,
     upper::Upper,
 };
-use crate::{BuildError, DalaError, Position};
+use crate::{BuildError, DalaError, DalaValue, Position};
 
 use super::expr::DalaExpression;
 use super::parser::Rule;
 
-fn build_children(pair: Pair<Rule>) -> Result<Vec<Box<DalaExpression>>, DalaError> {
+fn build_children(
+    pair: Pair<Rule>,
+    data: &HashMap<&str, &DalaValue>,
+) -> Result<Vec<Box<DalaExpression>>, DalaError> {
     pair.into_inner()
-        .map(|inner| build_ast(inner).and_then(|expr| Ok(Box::new(expr))))
+        .map(|inner| build_ast(inner, data).and_then(|expr| Ok(Box::new(expr))))
         .collect::<Result<Vec<Box<DalaExpression>>, DalaError>>()
 }
 
-fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
+fn build_ast(
+    pair: Pair<Rule>,
+    data: &HashMap<&str, &DalaValue>,
+) -> Result<DalaExpression, DalaError> {
     let pos = Position::new(pair.as_span());
     match pair.as_rule() {
-        Rule::EQ => {
-            build_children(pair).and_then(|children| Ok(DalaExpression::Eq(Eq::new(pos, children))))
-        }
-        Rule::NEQ => build_children(pair)
+        Rule::EQ => build_children(pair, data)
+            .and_then(|children| Ok(DalaExpression::Eq(Eq::new(pos, children)))),
+        Rule::NEQ => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Neq(Neq::new(pos, children)))),
-        Rule::CONCAT => build_children(pair)
+        Rule::CONCAT => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Concat(Concat::new(pos, children)))),
-        Rule::DIVIDE => build_children(pair)
+        Rule::DIVIDE => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Divide(Divide::new(pos, children)))),
-        Rule::IF => build_children(pair).and_then(|children| {
+        Rule::IF => build_children(pair, data).and_then(|children| {
             Ok(DalaExpression::IfConditional(IfConditional::new(
                 pos, children,
             )))
@@ -51,7 +58,23 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
             pos,
             pair.as_str().to_lowercase().parse::<bool>().unwrap(),
         ))),
-        Rule::UPPER => build_children(pair).and_then(|children| {
+        Rule::REF => {
+            let key = pair.as_str();
+            match data.get(key) {
+                Some(value) => match value {
+                    DalaValue::Str(value) => Ok(DalaExpression::Str(Str::new(pos, value.clone()))),
+                    DalaValue::Num(value) => Ok(DalaExpression::Num(Num::new(pos, value.clone()))),
+                    DalaValue::Boolean(value) => {
+                        Ok(DalaExpression::Bool(Bool::new(pos, value.clone())))
+                    }
+                },
+                None => Err(DalaError::BuildError(BuildError::new(
+                    pos,
+                    format!("No data found for key: {}", key),
+                ))),
+            }
+        }
+        Rule::UPPER => build_children(pair, data).and_then(|children| {
             if children.len() != 1 {
                 return Err(DalaError::BuildError(BuildError::new(
                     pos,
@@ -61,11 +84,11 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
 
             Ok(DalaExpression::Upper(Upper::new(pos, children[0].clone())))
         }),
-        Rule::MULTIPLY => build_children(pair)
+        Rule::MULTIPLY => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Multiply(Multiply::new(pos, children)))),
-        Rule::SUBTRACT => build_children(pair)
+        Rule::SUBTRACT => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Subtract(Subtract::new(pos, children)))),
-        Rule::SUM => build_children(pair)
+        Rule::SUM => build_children(pair, data)
             .and_then(|children| Ok(DalaExpression::Sum(Sum::new(pos, children)))),
         Rule::DALA
         | Rule::INNER
@@ -84,6 +107,9 @@ fn build_ast(pair: Pair<Rule>) -> Result<DalaExpression, DalaError> {
     }
 }
 
-pub fn create_ast(pairs: Pairs<'_, Rule>) -> Vec<Result<DalaExpression, DalaError>> {
-    pairs.map(build_ast).collect()
+pub fn create_ast(
+    pairs: Pairs<'_, Rule>,
+    data: &HashMap<&str, &DalaValue>,
+) -> Vec<Result<DalaExpression, DalaError>> {
+    pairs.map(|pair| build_ast(pair, data)).collect()
 }
