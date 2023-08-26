@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use dala::{eval, eval_with_data, DalaValue};
+use dala::{eval, eval_with_data, DalaError, DalaValue};
 
 #[test]
 fn test_concat_two_strings() {
@@ -42,4 +42,16 @@ fn test_with_data() {
 
     let DalaValue::Str(value) = result[0].as_ref().unwrap() else { panic!("Not a string") };
     assert_eq!(value, "helloworld");
+}
+
+#[test]
+fn test_with_missing_data() {
+    let result = eval_with_data(
+        "CONCAT($var1, $2)",
+        &HashMap::from([("$var1", &DalaValue::Str("hello".to_string()))]),
+    );
+    assert_eq!(result.len(), 1);
+
+    let DalaError::BuildError(err) = result[0].as_ref().unwrap_err() else { panic!("Not a build error") };
+    assert_eq!(err.message, "No data found for key: $2");
 }
